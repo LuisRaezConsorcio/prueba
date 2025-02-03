@@ -3,10 +3,11 @@ import { RouterModule, Routes } from "@angular/router";
 import { AppComponent } from "./app.component";
 import { UsercardsComponent } from "./User/user/usercards/usercards.component";
 import { UsermaintenanceComponent } from "./User/user/usermaintenance/usermaintenance.component";
+import { UserinspectComponent } from "./User/user/userinspect/userinspect.component";
 const routes: Routes = [
 	{
 		path: "",
-		redirectTo: "/user",
+		redirectTo: "/user/card",
 		pathMatch: "full",
 	},
 	{
@@ -14,6 +15,7 @@ const routes: Routes = [
 		children: [
 			{ path: "card", component: UsercardsComponent },
 			{ path: "maintenance", component: UsermaintenanceComponent },
+			{ path: "inspect", component: UserinspectComponent },
 		],
 	},
 	{ path: "**", component: AppComponent },
@@ -22,4 +24,4 @@ const routes: Routes = [
 	imports: [RouterModule.forRoot(routes)],
 	exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

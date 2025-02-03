@@ -21,11 +21,11 @@ namespace LibeyTechnicalTestAPI.Controllers.LibeyUser
             {
                 var row = _aggregate.FindResponse(documentNumber);
 
-                if (row == null)
+                if (row.DocumentNumber == null)
                     return NotFound(new { message="El Usuario no fue encontrado." });
                 
                 
-                return Ok(new { Datos= row, message="Asunto obtenido correctamente." });
+                return Ok(new { Datos= row, message="Usuario     obtenido correctamente." });
             }
             catch (Exception ex)
             {
@@ -43,12 +43,12 @@ namespace LibeyTechnicalTestAPI.Controllers.LibeyUser
             {
                 bool respuesta = _aggregate.Create(command);
 
-                if (!respuesta)
+                    if (!respuesta)
                 {
-                    return BadRequest("No se pudo crear el usuario.");
+                    return BadRequest(new { message = "No se pudo crear el usuario." });
                 }
 
-                return Ok("Usuario creado correctamente.");
+                return Ok(new { message = "Usuario creado correctamente." });
                 
             }
             catch (Exception ex)
@@ -58,7 +58,7 @@ namespace LibeyTechnicalTestAPI.Controllers.LibeyUser
             }
         }
 
-        // Método FindAll
+
         [HttpGet]
         public IActionResult FindAll()
         {
@@ -80,7 +80,7 @@ namespace LibeyTechnicalTestAPI.Controllers.LibeyUser
         }
 
         [HttpPut("{documentNumber}")]
-        public IActionResult Update(string documentNumber, UserUpdateorCreateCommand command)
+        public IActionResult Update(string documentNumber, [FromBody] LibeyUserResponse command)
         {
             try
             {
@@ -99,7 +99,7 @@ namespace LibeyTechnicalTestAPI.Controllers.LibeyUser
             }
         }
 
-        // Método Delete
+
         [HttpDelete]
         [Route("{documentNumber}")]
         public IActionResult Delete(string documentNumber)
@@ -110,10 +110,10 @@ namespace LibeyTechnicalTestAPI.Controllers.LibeyUser
 
                 if (!respuesta)
                 {
-                    return BadRequest("No se pudo eliminar el usuario.");
+                    return BadRequest(new { message = "No se pudo eliminar el usuario." });
                 }
 
-                return Ok("Usuario eliminado correctamente.");
+                return Ok(new { message = "Usuario eliminado correctamente." });
             }
             catch (Exception ex)
             {

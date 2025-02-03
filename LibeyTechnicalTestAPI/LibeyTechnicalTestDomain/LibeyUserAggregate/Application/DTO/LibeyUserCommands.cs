@@ -1,6 +1,6 @@
 ﻿namespace LibeyTechnicalTestDomain.LibeyUserAggregate.Application.DTO
 {
-    public record UserUpdateorCreateCommand
+    public record UserUpdateorCreateCommand 
     {
         public string DocumentNumber { get; init; }
         public int DocumentTypeId { get; init; }

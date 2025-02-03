@@ -32,6 +32,9 @@ namespace LibeyTechnicalTestDomain.LibeyUserAggregate.Infrastructure
                         Email = libeyUser.Email,
                         FathersLastName = libeyUser.FathersLastName,
                         MothersLastName = libeyUser.MothersLastName,
+                        RegionCode = libeyUser.UbigeoCode.PadRight(2).Substring(0, 2),
+                        ProvinceCode = libeyUser.UbigeoCode.PadRight(4).Substring(0, 4),
+                        UbigeoCode = libeyUser.UbigeoCode,
                         Name = libeyUser.Name,
                         Password = libeyUser.Password,
                         Phone = libeyUser.Phone
@@ -41,30 +44,29 @@ namespace LibeyTechnicalTestDomain.LibeyUserAggregate.Infrastructure
             else return new LibeyUserResponse();
         }
 
-        public bool Update(string documentNumber, LibeyUserResponse updatedUser)
+        public bool Update(string documentNumber, LibeyUserResponse userResponse)
         {
-            // Buscar el usuario existente en la base de datos
-            var existingUser = _context.LibeyUsers.FirstOrDefault(x => x.DocumentNumber == documentNumber);
+            var existingUser = _context.Set<LibeyUser>().FirstOrDefault(x => x.DocumentNumber == documentNumber);
 
             if (existingUser == null)
-                return false;
+                return false; 
 
-            // Actualizar solo las propiedades que no sean null
-            existingUser.Name = updatedUser.Name ?? existingUser.Name;
-            existingUser.FathersLastName = updatedUser.FathersLastName ?? existingUser.FathersLastName;
-            existingUser.MothersLastName = updatedUser.MothersLastName ?? existingUser.MothersLastName;
-            existingUser.Address = updatedUser.Address ?? existingUser.Address;
-            existingUser.UbigeoCode = updatedUser.UbigeoCode ?? existingUser.UbigeoCode;
-            existingUser.Phone = updatedUser.Phone ?? existingUser.Phone;
-            existingUser.Email = updatedUser.Email ?? existingUser.Email;
-            existingUser.Password = updatedUser.Password ?? existingUser.Password;
-            existingUser.Active = updatedUser.Active ?? existingUser.Active; // Para el caso de booleanos
+            existingUser.Update(
+                userResponse.Name,
+                userResponse.FathersLastName,
+                userResponse.MothersLastName,
+                userResponse.Address,
+                userResponse.UbigeoCode,
+                userResponse.Phone,
+                userResponse.Email,
+                userResponse.Password,
+                userResponse.Active
+            );
 
-            // Guardar los cambios en la base de datos
             _context.SaveChanges();
-            return true;
-        }
 
+            return true; 
+        }
 
 
         public bool Delete(string documentNumber)
@@ -74,10 +76,8 @@ namespace LibeyTechnicalTestDomain.LibeyUserAggregate.Infrastructure
             if (user == null)
                 return false;
 
-            // Cambiar el estado de 'Active' a false en lugar de eliminar el registro
             user.Deactivate();
 
-            // Guardar los cambios en la base de datos
             _context.SaveChanges();
             return true;
         }
@@ -94,6 +94,9 @@ namespace LibeyTechnicalTestDomain.LibeyUserAggregate.Infrastructure
                             Email = libeyUser.Email,
                             FathersLastName = libeyUser.FathersLastName,
                             MothersLastName = libeyUser.MothersLastName,
+                            RegionCode = libeyUser.UbigeoCode.PadRight(2).Substring(0, 2),
+                            ProvinceCode = libeyUser.UbigeoCode.PadRight(4).Substring(0, 4),
+                            UbigeoCode =libeyUser.UbigeoCode,
                             Name = libeyUser.Name,
                             Password = libeyUser.Password,
                             Phone = libeyUser.Phone

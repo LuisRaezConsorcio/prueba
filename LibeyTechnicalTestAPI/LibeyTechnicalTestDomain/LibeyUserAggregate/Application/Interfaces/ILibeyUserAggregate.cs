@@ -5,7 +5,7 @@ namespace LibeyTechnicalTestDomain.LibeyUserAggregate.Application.Interfaces
     {
         LibeyUserResponse FindResponse(string documentNumber);
         bool Create(UserUpdateorCreateCommand command);
-        bool Update(string documentNumber, UserUpdateorCreateCommand command);
+        bool Update(string documentNumber, LibeyUserResponse userResponse);
         bool Delete(string documentNumber);
         List<LibeyUserResponse> FindAll();
     }

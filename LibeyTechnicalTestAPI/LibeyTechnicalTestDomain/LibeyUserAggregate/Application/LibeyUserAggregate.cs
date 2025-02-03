@@ -14,7 +14,6 @@ namespace LibeyTechnicalTestDomain.LibeyUserAggregate.Application
         {
             try
             {
-                // Convertir el DTO a la entidad
                 var libeyUser = new LibeyUser(
                     command.DocumentNumber,
                     command.DocumentTypeId,
@@ -28,7 +27,6 @@ namespace LibeyTechnicalTestDomain.LibeyUserAggregate.Application
                     command.Password
                 );
 
-                // Llamar al repositorio para crear el usuario
                 return _repository.Create(libeyUser);
             }
             catch (Exception)
@@ -42,28 +40,9 @@ namespace LibeyTechnicalTestDomain.LibeyUserAggregate.Application
             return row;
         }
 
-        public bool Update(string documentNumber, UserUpdateorCreateCommand command)
+        public bool Update(string documentNumber, LibeyUserResponse userResponse)
         {
-            // Buscar el usuario en el repositorio
-            var existingUser = _repository.FindResponse(documentNumber);
-
-            if (existingUser == null)
-                return false;
-
-            var updatedUser = new LibeyUserResponse
-            {
-                Name = command.Name ?? existingUser.Name,
-                FathersLastName = command.FathersLastName ?? existingUser.FathersLastName,
-                MothersLastName = command.MothersLastName ?? existingUser.MothersLastName,
-                Address = command.Address ?? existingUser.Address,
-                UbigeoCode = command.UbigeoCode ?? existingUser.UbigeoCode,
-                Phone = command.Phone ?? existingUser.Phone,
-                Email = command.Email ?? existingUser.Email,
-                Password = command.Password ?? existingUser.Password
-            };
-
-            // Pasar la lógica al repositorio para que guarde los cambios
-            return _repository.Update(updatedUser);
+            return _repository.Update(documentNumber, userResponse);
         }
 
 
@@ -76,10 +55,9 @@ namespace LibeyTechnicalTestDomain.LibeyUserAggregate.Application
 
                 if (user == null)
                 {
-                    return false;  // Usuario no encontrado
+                    return false; 
                 }
 
-                // Eliminar el usuario del repositorio
                 return _repository.Delete(documentNumber);
             }
             catch (Exception)
